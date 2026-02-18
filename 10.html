@@ -1,16 +1,173 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Formularz walidacji</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 420px;
+            margin: 30px auto;
+            line-height: 1.4;
+        }
+
+        form {
+            display: grid;
+            gap: 10px;
+        }
+
+        label {
+            display: grid;
+            gap: 4px;
+        }
+
+        input {
+            padding: 8px;
+            border: 2px solid #ccc;
+            border-radius: 6px;
+        }
+
+        input.error {
+            border-color: #d93025;
+            background: #ffe8e6;
+        }
+
+        input.success {
+            border-color: #188038;
+            background: #e8f5e9;
+        }
+
+        .checkbox-row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .checkbox-row input {
+            width: 18px;
+            height: 18px;
+            padding: 0;
+        }
+
+        button {
+            padding: 10px;
+            border: none;
+            border-radius: 6px;
+            background: #1a73e8;
+            color: #fff;
+            cursor: pointer;
+        }
+
+        #message {
+            margin-top: 8px;
+            font-weight: 700;
+        }
+    </style>
 </head>
 <body>
-    <input type="text"> <br>
-    <input type="email" required> <br>
-    <input type="password" required> <br>
-    <input type="number" style="width: 70px;"> <br>
-    <input type="checkbox"> <br>
-    <input type="button" value="submit">
+    <form id="validationForm" novalidate>
+        <label>
+            Imię
+            <input id="name" type="text" placeholder="Podaj imię">
+        </label>
+
+        <label>
+            Email
+            <input id="email" type="email" placeholder="Podaj email">
+        </label>
+
+        <label>
+            Hasło
+            <input id="password" type="password" placeholder="Podaj hasło">
+        </label>
+
+        <label>
+            Wiek
+            <input id="age" type="number" min="0" placeholder="Podaj wiek">
+        </label>
+
+        <label class="checkbox-row">
+            <input id="consent" type="checkbox">
+            Zgoda na warunki
+        </label>
+
+        <button type="submit">Wyślij</button>
+    </form>
+
+    <p id="message"></p>
+
+    <script>
+        const form = document.getElementById('validationForm');
+        const nameInput = document.getElementById('name');
+        const emailInput = document.getElementById('email');
+        const passwordInput = document.getElementById('password');
+        const ageInput = document.getElementById('age');
+        const consentInput = document.getElementById('consent');
+        const message = document.getElementById('message');
+
+        function setStatus(input, isValid) {
+            input.classList.remove('error', 'success');
+            input.classList.add(isValid ? 'success' : 'error');
+        }
+
+        function validateName() {
+            const valid = nameInput.value.trim().length >= 3;
+            setStatus(nameInput, valid);
+            return valid;
+        }
+
+        function validateEmail() {
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            const valid = emailRegex.test(emailInput.value.trim());
+            setStatus(emailInput, valid);
+            return valid;
+        }
+
+        function validatePassword() {
+            const value = passwordInput.value;
+            const valid = value.length >= 8 && /\d/.test(value);
+            setStatus(passwordInput, valid);
+            return valid;
+        }
+
+        function validateAge() {
+            const valid = Number(ageInput.value) >= 18;
+            setStatus(ageInput, valid);
+            return valid;
+        }
+
+        function validateConsent() {
+            const valid = consentInput.checked;
+            setStatus(consentInput, valid);
+            return valid;
+        }
+
+        nameInput.addEventListener('input', validateName);
+        emailInput.addEventListener('input', validateEmail);
+        passwordInput.addEventListener('input', validatePassword);
+        ageInput.addEventListener('input', validateAge);
+        consentInput.addEventListener('change', validateConsent);
+
+        form.addEventListener('submit', (event) => {
+            event.preventDefault();
+
+            const allValid = [
+                validateName(),
+                validateEmail(),
+                validatePassword(),
+                validateAge(),
+                validateConsent()
+            ].every(Boolean);
+
+            if (allValid) {
+                message.textContent = 'Formularz poprawny ✅';
+                message.style.color = '#188038';
+            } else {
+                message.textContent = 'Popraw błędy w formularzu ❌';
+                message.style.color = '#d93025';
+            }
+        });
+    </script>
 </body>
 </html>
