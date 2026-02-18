@@ -1,13 +1,111 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Obsługa błędów bez przeładowania strony</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 420px;
+            margin: 40px auto;
+            line-height: 1.5;
+        }
+
+        label {
+            display: block;
+            margin-top: 12px;
+            font-weight: 600;
+        }
+
+        input {
+            width: 100%;
+            padding: 8px;
+            margin-top: 4px;
+            box-sizing: border-box;
+        }
+
+        button {
+            margin-top: 16px;
+            padding: 10px 14px;
+            cursor: pointer;
+        }
+
+        #message {
+            margin-top: 16px;
+            padding: 12px;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+            background: #f8f8f8;
+        }
+
+        .error {
+            color: #b00020;
+            border-color: #b00020 !important;
+            background: #fff1f3 !important;
+        }
+
+        .success {
+            color: #0a5c2f;
+            border-color: #0a5c2f !important;
+            background: #edf8f1 !important;
+        }
+    </style>
 </head>
 <body>
-    <input type="email" required> <br>
-    <input type="password" required> <br>
-    <input type="button" value="submit">
+    <h1>Logowanie</h1>
+
+    <form id="loginForm">
+        <label for="email">E-mail</label>
+        <input id="email" name="email" type="email" autocomplete="email" required>
+
+        <label for="password">Hasło</label>
+        <input id="password" name="password" type="password" minlength="6" required>
+
+        <button type="submit">Zaloguj</button>
+    </form>
+
+    <div id="message" aria-live="polite">Wypełnij formularz i wyślij.</div>
+
+    <script>
+        const form = document.getElementById('loginForm');
+        const emailInput = document.getElementById('email');
+        const passwordInput = document.getElementById('password');
+        const messageBox = document.getElementById('message');
+
+        form.addEventListener('submit', (event) => {
+            event.preventDefault();
+
+            const email = emailInput.value.trim();
+            const password = passwordInput.value;
+            const errors = [];
+
+            if (!email) {
+                errors.push('Pole e-mail jest wymagane.');
+            } else if (!/^\S+@\S+\.\S+$/.test(email)) {
+                errors.push('Podaj poprawny adres e-mail.');
+            }
+
+            if (!password) {
+                errors.push('Pole hasło jest wymagane.');
+            } else if (password.length < 6) {
+                errors.push('Hasło musi mieć co najmniej 6 znaków.');
+            }
+
+            if (errors.length > 0) {
+                messageBox.className = 'error';
+                messageBox.innerHTML = `<strong>Błąd:</strong><br>${errors.join('<br>')}`;
+                return;
+            }
+
+            messageBox.className = 'success';
+            messageBox.innerHTML = `
+                <strong>Dane poprawne.</strong><br>
+                Podsumowanie:<br>
+                E-mail: ${email}<br>
+                Długość hasła: ${password.length} znaków
+            `;
+        });
+    </script>
 </body>
 </html>
