@@ -4,39 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dynamiczne komunikaty błędów</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            max-width: 360px;
-            margin: 40px auto;
-            line-height: 1.4;
-        }
-
-        .field {
-            margin-bottom: 14px;
-        }
-
-        label {
-            display: block;
-            margin-bottom: 4px;
-        }
-
-        input {
-            width: 100%;
-            padding: 8px;
-            box-sizing: border-box;
-        }
-
-        .error {
-            color: #c62828;
-            font-size: 0.9rem;
-            margin-top: 4px;
-            min-height: 1.1em;
-        }
-    </style>
 </head>
 <body>
-    <form id="loginForm" novalidate>
+    <form id="loginForm" >
         <div class="field">
             <label for="login">Login</label>
             <input id="login" name="login" type="text">
@@ -60,7 +30,7 @@
         const passwordError = document.getElementById('passwordError');
 
         function showError(input, errorElement, message) {
-            if (input.value.trim() === '') {
+            if (input.value === '') {
                 errorElement.textContent = message;
                 return true;
             }

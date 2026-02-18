@@ -4,66 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Formularz walidacji</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            max-width: 420px;
-            margin: 30px auto;
-            line-height: 1.4;
-        }
-
-        form {
-            display: grid;
-            gap: 10px;
-        }
-
-        label {
-            display: grid;
-            gap: 4px;
-        }
-
-        input {
-            padding: 8px;
-            border: 2px solid #ccc;
-            border-radius: 6px;
-        }
-
-        input.error {
-            border-color: #d93025;
-            background: #ffe8e6;
-        }
-
-        input.success {
-            border-color: #188038;
-            background: #e8f5e9;
-        }
-
-        .checkbox-row {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .checkbox-row input {
-            width: 18px;
-            height: 18px;
-            padding: 0;
-        }
-
-        button {
-            padding: 10px;
-            border: none;
-            border-radius: 6px;
-            background: #1a73e8;
-            color: #fff;
-            cursor: pointer;
-        }
-
-        #message {
-            margin-top: 8px;
-            font-weight: 700;
-        }
-    </style>
 </head>
 <body>
     <form id="validationForm" novalidate>
@@ -118,8 +58,8 @@
         }
 
         function validateEmail() {
-            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-            const valid = emailRegex.test(emailInput.value.trim());
+            const emailRegex = /^\w*@\w*\.\w*$/;
+            const valid = emailRegex.test(emailInput.value);
             setStatus(emailInput, valid);
             return valid;
         }
@@ -152,19 +92,18 @@
         form.addEventListener('submit', (event) => {
             event.preventDefault();
 
-            const allValid = [
-                validateName(),
-                validateEmail(),
-                validatePassword(),
-                validateAge(),
-                validateConsent()
-            ].every(Boolean);
+            const allValid = 
+                validateName() &&
+                validateEmail() &&
+                validatePassword() &&
+                validateAge() &&
+                validateConsent();
 
             if (allValid) {
-                message.textContent = 'Formularz poprawny ✅';
+                message.textContent = 'Formularz poprawny';
                 message.style.color = '#188038';
             } else {
-                message.textContent = 'Popraw błędy w formularzu ❌';
+                message.textContent = 'Popraw błędy w formularzu';
                 message.style.color = '#d93025';
             }
         });

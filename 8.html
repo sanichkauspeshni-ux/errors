@@ -4,35 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Walidacja daty urodzenia</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 2rem;
-        }
-
-        form {
-            max-width: 320px;
-        }
-
-        label,
-        input,
-        button {
-            display: block;
-            width: 100%;
-            margin-bottom: 0.75rem;
-        }
-
-        .error {
-            color: #b00020;
-            min-height: 1.2rem;
-        }
-    </style>
 </head>
 <body>
     <form id="birthdate-form" novalidate>
         <label for="birthdate">Data urodzenia</label>
-        <input id="birthdate" name="birthdate" type="date" required>
-        <p id="error-message" class="error" aria-live="polite"></p>
+        <input id="birthdate" name="birthdate" type="date" required >
+        <p id="error-message" class="error"></p>
         <button type="submit">Zapisz</button>
     </form>
 
@@ -41,27 +18,23 @@
         const birthdateInput = document.getElementById('birthdate');
         const errorMessage = document.getElementById('error-message');
 
-        const today = new Date();
-        const todayISO = today.toISOString().split('T')[0];
-        birthdateInput.max = todayISO;
+        const today = new Date().getTime();
 
         form.addEventListener('submit', (event) => {
+            event.preventDefault();
             errorMessage.textContent = '';
 
             if (!birthdateInput.value) {
-                errorMessage.textContent = 'Wybierz datę urodzenia.';
-                event.preventDefault();
+                errorMessage.innerHTML = 'Wybierz datę urodzenia.';
                 return;
             }
 
-            if (birthdateInput.value > todayISO) {
-                errorMessage.textContent = 'Data urodzenia nie może być z przyszłości.';
-                event.preventDefault();
+            if (new Date(birthdateInput.value).getTime() > today) {
+                errorMessage.innerHTML = 'Data urodzenia nie może być z przyszłości.';
                 return;
             }
 
             alert('Formularz został poprawnie wysłany.');
-            event.preventDefault();
         });
     </script>
 </body>
