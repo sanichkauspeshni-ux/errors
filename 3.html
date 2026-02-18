@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        span{
+            color: red;
+        }
+        button+span{
+            color:  green;
+        }
+        .redBorder
+        {
+            border-color: red;
+        }
+    </style>
+</head>
+<body>
+        <input id="name" type="text" required>
+        <span></span>
+        <input id="email" type="text" required>
+        <span></span>
+        <input id="password" type="password" name="" id="password" required>
+        <span></span>
+        <input id="confirmation" type="password" required>
+        <span></span>
+        <input id="age" type="number">
+        <span></span>
+        <button onclick="validate()">Validate</button>
+        <span></span>
+
+    <script>
+
+        function validate()
+        {
+            let emailRegex = new RegExp("\\w*@+");
+
+            let email = document.querySelector("#email");
+            let password = document.querySelector("#password");
+            let confirmation = document.querySelector("#confirmation");
+            let name = document.querySelector("#name");
+            let comEmail = document.querySelector("#email+span");
+            let comPassword = document.querySelector("#password+span");
+            let comName = document.querySelector("name+span")
+            let comConfirmation = document.querySelector("#confirmation+span")
+            let succes = document.querySelector("button+span");
+            let age = document.querySelector("#age");
+            let comAge = document.querySelector("#age+span");
+
+            email.classList.remove("redBorder");
+            password.classList.remove("redBorder");
+            confirmation.classList.remove("redBorder");
+            age.classList.remove("redBorder");
+
+            comEmail.innerHTML = "";
+            comPassword.innerHTML = "";
+            comConfirmation.innerHTML = "";
+            succes.innerHTML = "";
+            comAge.innerHTML = "";
+            
+            try
+            {
+                
+                if (!emailRegex.test(email.value))
+                {
+                
+                    comEmail.innerHTML = "wrong email";
+                    email.classList.add("redBorder");
+                    throw new Error("wrong email");
+                }
+                
+                if (password.value.length < 6)
+                {
+                    comPassword.innerHTML = "short password";
+                    password.classList.add("redBorder");
+                    throw new Error("short password");
+                
+                    
+                }
+            
+                if (password.value != confirmation.value) {
+                    comConfirmation.innerHTML = "different passwords";
+                    confirmation.classList.add("redBorder");
+                    password.classList.add("redBorder");
+                    throw new Error("different passwords");
+                    
+                
+                }
+
+                if (age.value < 18) {
+                    comAge.innerHTML = "too young";
+                    age.classList.add("redBorder");
+                    throw new Error("too young");
+                    
+                
+                }
+
+                succes.innerHTML = "Rejestracja zakończona sukcesem";
+                
+            
+                console.log("smth");
+                
+            
+            
+            
+            
+            
+            }
+            catch(error)
+            {
+                console.error(error);
+            }
+        }
+    </script>
+    
+</body>
+</html>
