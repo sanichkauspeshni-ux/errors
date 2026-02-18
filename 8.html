@@ -1,12 +1,68 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Walidacja daty urodzenia</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 2rem;
+        }
+
+        form {
+            max-width: 320px;
+        }
+
+        label,
+        input,
+        button {
+            display: block;
+            width: 100%;
+            margin-bottom: 0.75rem;
+        }
+
+        .error {
+            color: #b00020;
+            min-height: 1.2rem;
+        }
+    </style>
 </head>
 <body>
-    <input type="date"> <br>
-    <input type="button" value="submit">
+    <form id="birthdate-form" novalidate>
+        <label for="birthdate">Data urodzenia</label>
+        <input id="birthdate" name="birthdate" type="date" required>
+        <p id="error-message" class="error" aria-live="polite"></p>
+        <button type="submit">Zapisz</button>
+    </form>
+
+    <script>
+        const form = document.getElementById('birthdate-form');
+        const birthdateInput = document.getElementById('birthdate');
+        const errorMessage = document.getElementById('error-message');
+
+        const today = new Date();
+        const todayISO = today.toISOString().split('T')[0];
+        birthdateInput.max = todayISO;
+
+        form.addEventListener('submit', (event) => {
+            errorMessage.textContent = '';
+
+            if (!birthdateInput.value) {
+                errorMessage.textContent = 'Wybierz datę urodzenia.';
+                event.preventDefault();
+                return;
+            }
+
+            if (birthdateInput.value > todayISO) {
+                errorMessage.textContent = 'Data urodzenia nie może być z przyszłości.';
+                event.preventDefault();
+                return;
+            }
+
+            alert('Formularz został poprawnie wysłany.');
+            event.preventDefault();
+        });
+    </script>
 </body>
 </html>
