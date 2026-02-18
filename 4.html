@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .redBack{
+            background-color: red;
+        }
+    </style>
+</head>
+<body>
+    <input id="name" type="text">
+    <textarea name="" id="text"></textarea>
+    <span>Length: 0</span>
+    <button id="button">SMTH</button>
+    <script>
+        let area = document.querySelector("textarea");
+        let ctr = document.querySelector("span");
+        let button = document.querySelector("#button");
+        area.addEventListener("input", () => {
+            ctr.innerHTML = "Length: " + area.value.length;
+        })
+
+        button.onclick = () => {
+            area.classList.remove("redBack");
+            if (area.value.length < 20) {
+                console.error("Too short");
+                area.classList.add("redBack");
+            }
+            
+        }
+    </script>
+</body>
+</html>
