@@ -1,13 +1,94 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Dynamiczne komunikaty błędów</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 360px;
+            margin: 40px auto;
+            line-height: 1.4;
+        }
+
+        .field {
+            margin-bottom: 14px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        input {
+            width: 100%;
+            padding: 8px;
+            box-sizing: border-box;
+        }
+
+        .error {
+            color: #c62828;
+            font-size: 0.9rem;
+            margin-top: 4px;
+            min-height: 1.1em;
+        }
+    </style>
 </head>
 <body>
-    <input type="text"> <br>
-    <input type="password"> <br>
-    <input type="button" value="submit">
+    <form id="loginForm" novalidate>
+        <div class="field">
+            <label for="login">Login</label>
+            <input id="login" name="login" type="text">
+            <div id="loginError" class="error"></div>
+        </div>
+
+        <div class="field">
+            <label for="password">Hasło</label>
+            <input id="password" name="password" type="password">
+            <div id="passwordError" class="error"></div>
+        </div>
+
+        <button type="submit">Wyślij</button>
+    </form>
+
+    <script>
+        const form = document.getElementById('loginForm');
+        const loginInput = document.getElementById('login');
+        const passwordInput = document.getElementById('password');
+        const loginError = document.getElementById('loginError');
+        const passwordError = document.getElementById('passwordError');
+
+        function showError(input, errorElement, message) {
+            if (input.value.trim() === '') {
+                errorElement.textContent = message;
+                return true;
+            }
+            errorElement.textContent = '';
+            return false;
+        }
+
+        function clearErrorOnInput(input, errorElement) {
+            input.addEventListener('input', () => {
+                if (input.value.trim() !== '') {
+                    errorElement.textContent = '';
+                }
+            });
+        }
+
+        clearErrorOnInput(loginInput, loginError);
+        clearErrorOnInput(passwordInput, passwordError);
+
+        form.addEventListener('submit', (event) => {
+            event.preventDefault();
+
+            const loginHasError = showError(loginInput, loginError, 'Pole login jest wymagane.');
+            const passwordHasError = showError(passwordInput, passwordError, 'Pole hasło jest wymagane.');
+
+            if (!loginHasError && !passwordHasError) {
+                alert('Formularz poprawnie wypełniony.');
+            }
+        });
+    </script>
 </body>
 </html>
