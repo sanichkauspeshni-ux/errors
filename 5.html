@@ -1,17 +1,41 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Walidacja numeru telefonu</title>
 </head>
 <body>
-    <input type="text">
-    <button>Validate</button>
-    <script>
-        let regex = new RegExp("\\+[0-9]{9}");
+    <form id="phone-form">
+        <label for="phone">Numer telefonu:</label>
+        <input id="phone" name="phone" type="text" placeholder="np. 123456789" required>
+        <button type="submit">Sprawdź</button>
+    </form>
 
-        
+    <p id="message" aria-live="polite"></p>
+
+    <script>
+        const phoneRegex = /^\d{9}$/;
+        const form = document.getElementById('phone-form');
+        const phoneInput = document.getElementById('phone');
+        const message = document.getElementById('message');
+
+        form.addEventListener('submit', (event) => {
+            event.preventDefault();
+            const phoneValue = phoneInput.value.trim();
+
+            if (!phoneRegex.test(phoneValue)) {
+                const errorMessage = 'Niepoprawny format numeru telefonu. Wpisz dokładnie 9 cyfr.';
+                message.textContent = errorMessage;
+                message.style.color = 'red';
+                console.error(errorMessage);
+                return;
+            }
+
+            message.textContent = 'Numer telefonu jest poprawny.';
+            message.style.color = 'green';
+            console.log('Numer telefonu jest poprawny.');
+        });
     </script>
 </body>
 </html>
