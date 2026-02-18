@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        span{
+            color: red;
+        }
+        .redBorder
+        {
+            border-color: red;
+        }
+    </style>
+</head>
+<body>
+        <input id="email" type="text" required>
+        <span></span>
+        <input id="password" type="password" name="" id="" required>
+        <span></span>
+        <button onclick="validate()">Validate</button>
+
+    <script>
+
+        function validate()
+        {
+            let emailRegex = new RegExp("\\w*@+");
+
+            let email = document.querySelector("#email");
+            let password = document.querySelector("#password");
+            let com1 = document.querySelector("#email+span");
+            let com2 = document.querySelector("#password+span");
+
+
+            if (!emailRegex.test(email.value))
+            {
+
+                console.error("wrong email");
+                com1.innerHTML = "wrong email";
+                email.classList.add("redBorder");
+            }
+            
+            if (password.value.length < 6)
+            {
+                console.error("short password");
+                com2.innerHTML = "short password";
+                password.classList.add("redBorder");
+
+                
+            }
+            console.log("smth");
+        }
+    </script>
+    
+</body>
+</html>
